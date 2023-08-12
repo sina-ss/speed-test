@@ -1,2 +1,2 @@
 # speed-test
-Clone speedtest.net for persian use, using react and nodejs
+Clone speedtest.net for persian users, using react and nodejs
