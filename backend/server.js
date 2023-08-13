@@ -17,7 +17,7 @@ const generateRandomData = (length) => {
     }
 
     return result;
-};
+}; 
 
 // Download Speed Test Endpoint
 app.get('/download', (req, res) => {

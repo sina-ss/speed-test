@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Button, Typography, LinearProgress } from "@mui/material";
+import { Button, Typography, CircularProgress, Box } from "@mui/material";
 
-type TestStatus = "idle" | "downloading" | "uploading";
+type TestStatus = "idle" | "downloading" | "uploading" | "pinging";
 
 const Home: React.FC = () => {
   const [downloadSpeed, setDownloadSpeed] = useState<number | null>(null);
@@ -70,43 +70,56 @@ const Home: React.FC = () => {
       // Handle error, show user feedback, etc.
     }
   };
+  const startAllTests = async () => {
+    await measurePing();
+    await startDownloadTest();
+    await startUploadTest();
+  };
 
   return (
-    <div style={{ padding: "20px" }}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      height="100vh"
+      style={{ padding: "20px" }}
+    >
       <Typography variant="h4" gutterBottom>
         SpeedTest Clone
       </Typography>
-      <Button
-        variant="contained"
-        onClick={startDownloadTest}
-        disabled={status !== "idle"}
-      >
-        Start Download Test
-      </Button>
-      <Button
-        variant="contained"
-        onClick={startUploadTest}
-        disabled={status !== "idle"}
-      >
-        Start Upload Test
-      </Button>
-      <Button
-        variant="contained"
-        onClick={measurePing}
-        disabled={status !== "idle"}
-      >
-        Measure Ping
-      </Button>
-      {ping && <Typography>Ping: {ping} ms</Typography>}
-      {status === "downloading" && <LinearProgress />}
-      {status === "uploading" && <LinearProgress />}
+
+      {(status === "downloading" ||
+        status === "uploading" ||
+        status === "pinging") && (
+        <Box my={4}>
+          <CircularProgress />
+        </Box>
+      )}
+
+      {status === "idle" && (
+        <Button
+          variant="contained"
+          size="large"
+          onClick={startAllTests}
+          style={{ margin: "20px 0" }}
+        >
+          Start Test
+        </Button>
+      )}
+
+      {ping && <Typography variant="h6">Ping: {ping} ms</Typography>}
       {downloadSpeed && (
-        <Typography>Download Speed: {downloadSpeed.toFixed(2)} Mbps</Typography>
+        <Typography variant="h3" gutterBottom>
+          {downloadSpeed.toFixed(2)} Mbps
+        </Typography>
       )}
       {uploadSpeed && (
-        <Typography>Upload Speed: {uploadSpeed.toFixed(2)} Mbps</Typography>
+        <Typography variant="h6">
+          Upload: {uploadSpeed.toFixed(2)} Mbps
+        </Typography>
       )}
-    </div>
+    </Box>
   );
 };
 
