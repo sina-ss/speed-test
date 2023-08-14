@@ -17,7 +17,7 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
     <div
       style={{
         position: "fixed",
-        bottom: "32px",
+        top: "32px",
         right: "32px",
         zIndex: 1000,
       }}

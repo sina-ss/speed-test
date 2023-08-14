@@ -33,30 +33,38 @@ const SpeedMetrics: React.FC<{
 };
 
 const SpeedIndicator: React.FC<{ speed: number }> = ({ speed }) => {
-  // Convert the speed to an angle for the speed hand. You may need to adjust the calculation depending on the desired range and sensitivity.
-  const angle = (speed / 100) * 180; // Assuming 100Mbps maps to 180 degrees.
+  const normalizedSpeed = speed / 10; // Assuming 100Mbps is the max value and represents 100%.
 
   return (
     <Box position="relative" width="200px" height="100px">
-      <Box
-        bottom="0"
-        left="50%"
-        width="4px"
-        height="80px"
+      <CircularProgress
+        variant="determinate"
+        value={normalizedSpeed * 100}
+        size="200px"
+        thickness={2}
         sx={{
-          transform: `rotate(${angle}deg)`,
+          color: "#f44", // You can adjust the color
+          transform: "rotate(-120deg)",
           position: "absolute",
-          transformOrigin: "bottom",
+          bottom: 0,
+          left: 0,
+          circle: {
+            clipPath: "polygon(50% 50%, 100% 50%, 100% 100%, 0% 100%)", // Use clipPath to create the semi-circle effect
+          },
         }}
       />
-      <Box
-        position="absolute"
-        bottom="0"
-        left="0"
-        right="0"
-        height="4px"
-        bgcolor="black"
-      />
+      <Typography
+        variant="h6"
+        component="div"
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        {speed.toFixed(2)} Mbps
+      </Typography>
     </Box>
   );
 };
@@ -68,6 +76,7 @@ const Home: React.FC<SpeedTestProps> = () => {
   const [status, setStatus] = useState<string>("idle"); // could use "idle" | "downloading" | "uploading" | "pinging"
   const [error, setError] = useState<string | null>(null);
   const [isTesting, setIsTesting] = useState(false);
+  const [testCompleted, setTestCompleted] = useState(false);
 
   const startDownloadTest = async () => {
     try {
@@ -159,6 +168,7 @@ const Home: React.FC<SpeedTestProps> = () => {
     await startDownloadTest();
     await startUploadTest();
     setIsTesting(false);
+    setTestCompleted(true); // set the testCompleted to true once all tests are finished
   };
 
   return (
@@ -199,7 +209,7 @@ const Home: React.FC<SpeedTestProps> = () => {
         </Box>
       )}
 
-      {!isTesting && status === "idle" && (
+      {!isTesting && status === "idle" && !testCompleted && (
         <SpeedTestButton startAllTests={startAllTests} />
       )}
 

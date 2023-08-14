@@ -20,7 +20,7 @@ function generateRandomData(size) {
 
 // Download endpoint
 app.get('/download', (req, res) => {
-    const dataSize = 1024 * 1024 * 10; // 10MB
+    const dataSize = 1024 * 1024 * 100; // 100MB
     const data = generateRandomData(dataSize);
     res.setHeader('Content-Length', dataSize); // important to set content length for speed tests
     res.send(data);
