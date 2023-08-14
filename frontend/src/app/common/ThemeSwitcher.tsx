@@ -17,13 +17,13 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({
     <div
       style={{
         position: "fixed",
-        bottom: "20px",
-        right: "20px",
+        bottom: "32px",
+        right: "32px",
         zIndex: 1000,
       }}
     >
       <Button onClick={toggleTheme}>
-        {themeMode === "light" ? <LightModeIcon /> : <DarkModeIcon />}
+        {themeMode === "light" ? <LightModeIcon fontSize="large"/> : <DarkModeIcon fontSize="large"/>}
       </Button>
     </div>
   );

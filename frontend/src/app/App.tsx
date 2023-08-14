@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Home from './../features/home/Home';
 import { createTheme, ThemeProvider, CssBaseline } from '@mui/material';
 import ThemeSwitcher from './common/ThemeSwitcher';
+import NavBar from '../features/navbar/Navbar';
 
 function App() {
     const [themeMode, setThemeMode] = useState<'light' | 'dark'>('light');
@@ -34,14 +35,15 @@ function App() {
     });
 
     return (
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <div className="App">
-                <Home />
-                <ThemeSwitcher themeMode={themeMode} toggleTheme={toggleTheme} />
-            </div>
-        </ThemeProvider>
-    );
+      <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <div className="App">
+              <NavBar />
+              <Home />
+              <ThemeSwitcher themeMode={themeMode} toggleTheme={toggleTheme} />
+          </div>
+      </ThemeProvider>
+  );
 }
 
 export default App;
